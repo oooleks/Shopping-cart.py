@@ -1,6 +1,7 @@
 class ShoppingCart(object):
     # Creates shopping cart objects
     items_in_cart = {}
+
     def __init__(self, customer_name):
         self.customer_name = customer_name
 
@@ -29,38 +30,35 @@ class ShoppingCart(object):
 def choice():       # choice of action
     ch = ''
     while ch != '1' and ch != '2' and ch != '3':
-        print('Select further action:', '\n' + '1. Continue adding products to cart', '\n' + '2. Remove product from cart', '\n' + '3. Exit')
+        print('Select action:', '\n' + '1. Add product to the cart', '\n' + '2. Remove product from the cart', '\n' + '3. Log out')
         ch = input()
         ch = str(ch)
     return ch
 
-answ = ''
-while answ != 'y' and answ != 'n':
-    answ = input('Would you like to add products to your cart? (y-Yes or n-No)')
-    answ = str(answ.lower())
-if 'n' == answ:
-    print('By!')
-    raise SystemExit()
-
-# while in cart add actions
-my_cart = ShoppingCart(input('Hi! Enter your name: '))
-while answ == 'y':
-    x = input('Enter name of product to add into cart: ')
-    y = input('Price: ')
-    my_cart.add_item(x, y)
-    answ = ''
-    while answ != 'y' and answ != 'n':
-        answ = input('Would you like to continue to add products to your cart? (y-Yes or n-No)')
-        answ = str(answ.lower())
-    if answ == 'n':
+def in_cart():      # user in cart until log out
+    name = input('Enter your name: ')
+    my_cart = ShoppingCart(name)
+    res1 = '1'
+    while res1 != '3':
         res1 = choice()
         if res1 == '1':
-            answ = 'y'
+            x = input('Enter name of product to add into cart: ')
+            y = input('Price: ')
+            my_cart.add_item(x, y)
         elif res1 == '2':
             my_cart.print_out_cart()
-            x = input('Enter name of item to be removed from cart: ')
-            my_cart.remove_item(x)
-            answ = 'y'          # Not resolved what to do after removing from cart
-        else:
-            print('By! Come back!')
-            break
+            my_cart.remove_item(input('Enter product name to remove it from cart: '))
+    my_cart.print_out_cart()
+    print('By,', name + '! You logged out.')
+
+# main part
+                 
+answer = ''
+while answer != 'y' and answer != 'n':
+    answer = input('Hi! Would you like to add products to your cart? (y-Yes or n-No)')
+    answer = str(answer.lower())
+if answer == 'n':
+    print('By!')
+    raise SystemExit()
+else:
+    in_cart()
